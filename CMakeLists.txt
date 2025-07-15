@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(OpenCV REQUIRED)
 
-add_executable(bus_status main.cpp bus.cpp)
+add_executable(bus_status main.cpp)
 
 target_link_libraries(bus_status ${OpenCV_LIBS})
 include_directories(${OpenCV_INCLUDE_DIRS})

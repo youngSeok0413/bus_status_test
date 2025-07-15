@@ -1,3 +1,0 @@
-/home/yschoi/workspace/bus_status_test/build/CMakeFiles/bus_status.dir
-/home/yschoi/workspace/bus_status_test/build/CMakeFiles/edit_cache.dir
-/home/yschoi/workspace/bus_status_test/build/CMakeFiles/rebuild_cache.dir
