@@ -1,6 +1,4 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/bus_status.dir/bus.cpp.o"
-  "CMakeFiles/bus_status.dir/bus.cpp.o.d"
   "CMakeFiles/bus_status.dir/main.cpp.o"
   "CMakeFiles/bus_status.dir/main.cpp.o.d"
   "bus_status"

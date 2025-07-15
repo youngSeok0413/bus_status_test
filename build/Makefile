@@ -129,30 +129,6 @@ bus_status/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/bus_status.dir/build.make CMakeFiles/bus_status.dir/build
 .PHONY : bus_status/fast
 
-bus.o: bus.cpp.o
-.PHONY : bus.o
-
-# target to build an object file
-bus.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bus_status.dir/build.make CMakeFiles/bus_status.dir/bus.cpp.o
-.PHONY : bus.cpp.o
-
-bus.i: bus.cpp.i
-.PHONY : bus.i
-
-# target to preprocess a source file
-bus.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bus_status.dir/build.make CMakeFiles/bus_status.dir/bus.cpp.i
-.PHONY : bus.cpp.i
-
-bus.s: bus.cpp.s
-.PHONY : bus.s
-
-# target to generate assembly for a file
-bus.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/bus_status.dir/build.make CMakeFiles/bus_status.dir/bus.cpp.s
-.PHONY : bus.cpp.s
-
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -186,9 +162,6 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... bus_status"
-	@echo "... bus.o"
-	@echo "... bus.i"
-	@echo "... bus.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
