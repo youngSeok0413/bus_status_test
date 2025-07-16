@@ -1,7 +1,9 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <algorithm>
 #include <iomanip>
 #include <numeric>
+#include <ctime>
 
 cv::Mat frame; // 전역 변수로 현재 프레임 저장
 
@@ -78,7 +80,7 @@ void getUnifiedMaskDynamicWhite(
     cv::Mat &dst_mask,
     double chroma_threshold = 0.15,
     double white_percentile = 90.0 // 상위 10% 밝기 이상이면 흰색
-)
+) //만약 local 하게 처리하면?
 {
   CV_Assert(bgrImage.type() == CV_8UC3); // BGR 형식
 
@@ -102,7 +104,7 @@ void getUnifiedMaskDynamicWhite(
       else
       {
         achromatic_points.emplace_back(cv::Point(x, y), brightness);
-        achromatic_brightness.push_back(brightness);
+        achromatic_brightness.push_back(brightness); //-> 함수 자체에 대해서 sort 함수를 만들것
       }
     }
   }
@@ -110,6 +112,8 @@ void getUnifiedMaskDynamicWhite(
   // 무채색 밝기 기준 계산 (white_percentile 분위)
   if (!achromatic_brightness.empty())
   {
+    std::unique(achromatic_brightness.begin(), achromatic_brightness.end());
+    std::cout << achromatic_brightness.size() << std::endl;
     std::sort(achromatic_brightness.begin(), achromatic_brightness.end());
     int idx = std::clamp(
         static_cast<int>((white_percentile / 100.0) * achromatic_brightness.size()),
@@ -201,7 +205,7 @@ int main()
 {
   // 트랙바 초기값
   int thresh_1 = 5;
-  int thresh_2 = 255;
+  int thresh_2 = 90;
 
   // 영상 열기
   cv::VideoCapture cap("test.MP4"); // 웹캠 또는 "video.mp4"
@@ -214,7 +218,7 @@ int main()
   // 트랙바 설정
   cv::namedWindow("Controls", cv::WINDOW_AUTOSIZE);
   cv::createTrackbar("th1", "Controls", &thresh_1, 100);
-  cv::createTrackbar("th2", "Controls", &thresh_2, 765);
+  cv::createTrackbar("th2", "Controls", &thresh_2, 100);
   cv::namedWindow("Result", cv::WINDOW_NORMAL);
   cv::resizeWindow("Result", 800, 600);
   cv::setMouseCallback("Result", onMouse); // 마우스 콜백 등록
@@ -223,12 +227,15 @@ int main()
 
   cv::Mat mask, lab, result;
 
+  time_t start, end;
   while (true)
   {
+    start = time(NULL);
     cap >> frame;
     if (frame.empty())
       break;
 
+    
     cv::cvtColor(frame, lab, cv::COLOR_BGR2Lab);
 
     // 채널 분리
@@ -247,8 +254,9 @@ int main()
     cv::Mat result;
     cv::cvtColor(lab, result, cv::COLOR_Lab2BGR);
 
-    getUnifiedMaskDynamicWhite(result, mask, (double)thresh_1 / 100, thresh_2); // before change -> color filter
-
+    getUnifiedMaskDynamicWhite(frame, mask, (double)thresh_1 / 100, thresh_2); // before change -> color filter
+    end = time(NULL);
+    std::cout << (double)(end-start) << std::endl;
     // 결과 출력
     cv::imshow("Result", result);
     cv::imshow("Mask", mask);
